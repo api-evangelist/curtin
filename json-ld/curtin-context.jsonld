@@ -1,0 +1,37 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "curtin": "https://www.curtin.edu.au/ns#",
+    "name": "schema:name",
+    "url": "schema:url",
+    "description": "schema:description",
+    "logo": "schema:logo",
+    "sameAs": "schema:sameAs",
+    "foundingLocation": "schema:foundingLocation",
+    "department": "schema:department",
+    "CollegeOrUniversity": "schema:CollegeOrUniversity",
+    "repository": {
+      "@id": "curtin:repository",
+      "@type": "@id"
+    },
+    "researchData": {
+      "@id": "curtin:researchData",
+      "@type": "@id"
+    },
+    "identifier": "schema:identifier",
+    "dateModified": "schema:dateModified"
+  },
+  "@type": "CollegeOrUniversity",
+  "@id": "https://www.curtin.edu.au/",
+  "name": "Curtin University",
+  "url": "https://www.curtin.edu.au/",
+  "description": "Public research university based in Perth, Western Australia.",
+  "sameAs": [
+    "https://github.com/CurtinIDS",
+    "https://github.com/Curtin-Open-Knowledge-Initiative",
+    "https://www.linkedin.com/school/curtin-university/"
+  ],
+  "repository": "https://espace.curtin.edu.au/",
+  "researchData": "https://researchdata.edu.au/contributors/curtin-university",
+  "dateModified": "2026-06-03"
+}
