@@ -1,0 +1,56 @@
+---
+name: Curtin University
+description: Curtin University public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/curtin/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      Curtin University (QS World 2025 #174) has no centralized public developer
+      portal or documented general-purpose API program. Confirmed live: the
+      espace institutional repository (Ex Libris Primo/Esploro), the
+      data.curtin.edu.au landing page (a static S3/CloudFront-served page, not
+      an open-data API), and Curtin's contributor presence in the national
+      Research Data Australia registry. The historically cited OAI-PMH endpoint
+      (OAI-PUB/2) now redirects into the Primo discovery layer rather than
+      serving OAI-PMH, so no current documented public harvest endpoint could be
+      independently verified. Department-level GitHub orgs exist but there is no
+      single official Curtin org. No api.* or developer.* subdomain and no
+      public status page resolved. No endpoints were fabricated; entries reflect
+      only what was probed live.
+    endpoints:
+      - url: https://www.curtin.edu.au/
+        status: 200
+        note: Official university website, resolves.
+      - url: https://espace.curtin.edu.au/
+        status: 202
+        note: Institutional repository on Primo/Esploro; CDN bot-challenge response.
+      - url: https://espace.library.curtin.edu.au/OAI-PUB/2
+        status: 200
+        note: Legacy OAI-PMH path now serves the Primo discovery HTML app, not OAI-PMH.
+      - url: https://data.curtin.edu.au/
+        status: 200
+        note: Static Remix/S3 CloudFront landing page; no API surface found.
+      - url: https://researchdata.edu.au/contributors/curtin-university
+        status: 200
+        note: Curtin research data records hosted on national RDA registry.
+      - url: https://github.com/CurtinIDS
+        status: 200
+        note: Curtin Institute for Data Science GitHub org (department-level).
+      - url: https://github.com/Curtin-Open-Knowledge-Initiative
+        status: 200
+        note: Curtin Open Knowledge Initiative GitHub org (department-level).
+      - url: https://www.linkedin.com/school/curtin-university/
+        status: 999
+        note: LinkedIn school page; 999 is LinkedIn's standard bot-block, URL pattern valid.
+      - url: https://api.curtin.edu.au/
+        status: 0
+        note: Does not resolve; no dedicated API subdomain.
+      - url: https://developer.curtin.edu.au/
+        status: 0
+        note: Does not resolve; no developer portal subdomain.
+      - url: https://status.curtin.edu.au/
+        status: 0
+        note: Does not resolve; no public status page found.

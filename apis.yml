@@ -1,0 +1,78 @@
+---
+aid: curtin
+name: Curtin University
+description: >-
+  Curtin University is a public research university based in Perth, Western
+  Australia, and is ranked #174 in the QS World University Rankings 2025. Curtin
+  operates an institutional research repository (espace, built on Ex Libris
+  Primo/Esploro), contributes datasets to the national Research Data Australia
+  registry, and maintains several department-level open-source GitHub
+  organizations. As of this review Curtin does not publish a centralized public
+  developer portal or a documented general-purpose API program; the developer
+  footprint is limited to library/repository discovery platforms and
+  research-data harvesting interfaces operated through third-party platforms.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/curtin/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research
+  - Open Data
+  - Library
+  - Australia
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: curtin:espace
+    name: Curtin espace Institutional Repository
+    description: >-
+      espace is Curtin University's open-access institutional repository of
+      research publications and higher-degree-by-research theses, delivered on
+      the Ex Libris Primo/Esploro discovery platform. Historically the
+      repository exposed an OAI-PMH harvesting interface for metadata; the
+      legacy endpoint now redirects into the Primo discovery layer and no
+      current public, documented API endpoint could be independently confirmed
+      during this review.
+    humanURL: https://espace.curtin.edu.au/
+    tags: [ Repository, Research, Library, OAI-PMH, Metadata ]
+    properties:
+      - type: Documentation
+        url: https://espace.curtin.edu.au/
+  - aid: curtin:researchdata
+    name: Curtin Research Data (via Research Data Australia)
+    description: >-
+      Curtin University publishes research data collection records through the
+      national Research Data Australia (RDA) registry operated by the Australian
+      Research Data Commons (ARDC). Curtin's records are discoverable and
+      harvestable through RDA's platform-level interfaces; Curtin itself does
+      not operate a documented public data API for this collection.
+    humanURL: https://researchdata.edu.au/contributors/curtin-university
+    tags: [ Research, Open Data, Datasets, Metadata ]
+    properties:
+      - type: Documentation
+        url: https://researchdata.edu.au/contributors/curtin-university
+common:
+  - type: Website
+    url: https://www.curtin.edu.au/
+  - type: GitHub
+    url: https://github.com/CurtinIDS
+  - type: GitHub
+    url: https://github.com/Curtin-Open-Knowledge-Initiative
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/curtin-university/
+  - type: Plans
+    url: plans/curtin-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/curtin-rate-limits.yml
+  - type: FinOps
+    url: finops/curtin-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
