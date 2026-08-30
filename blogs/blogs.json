@@ -3,13 +3,19 @@
   "feeds": [
     {
       "source": "https://news.curtin.edu.au/",
-      "feed_url": "https://news.curtin.edu.au/",
-      "title": "Curtin University News",
+      "feed_url": "https://www.curtin.edu.au/news/feed/",
+      "title": "",
       "saved": 0,
-      "method": "none",
-      "error": "parse_failed"
+      "method": "discovered"
+    },
+    {
+      "source": "https://www.curtin.edu.au/about/contact/",
+      "feed_url": "https://www.curtin.edu.au/about/feed/atom/",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-08-22T20:08:02Z"
+  "fetched": "2026-08-30T22:33:40Z"
 }

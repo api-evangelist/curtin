@@ -1,95 +1,438 @@
----
 aid: curtin
 name: Curtin University
+x-type: university
+x-category: Public Research University
 description: >-
-  Curtin University is a public research university based in Perth, Western
-  Australia, and is ranked #174 in the QS World University Rankings 2025. Curtin
-  operates an institutional research repository (espace, built on Ex Libris
-  Primo/Esploro), contributes datasets to the national Research Data Australia
-  registry, and maintains several department-level open-source GitHub
-  organizations. As of this review Curtin does not publish a centralized public
-  developer portal or a documented general-purpose API program; the developer
-  footprint is limited to library/repository discovery platforms and
-  research-data harvesting interfaces operated through third-party platforms.
+  Curtin University is a public research university in Perth, Western Australia, and the largest
+  university in the state. Its programmable footprint is small, real, and almost entirely
+  unadvertised: Curtin operates no developer portal, publishes no OpenAPI, and issues no API keys,
+  yet three institution-operated surfaces answer unauthenticated requests today. The first is
+  `mimas/v1`, the bespoke REST namespace registered by Curtin's own WordPress theme on
+  www.curtin.edu.au, whose `search/elastic` endpoint is a keyless proxy onto Curtin's
+  Elasticsearch cluster indexing `curtin-learning-offerings-prod-*` — the university's course and
+  unit catalog. The second is the Curtin Open Knowledge Initiative's open-access analytics API at
+  api.coki.ac, which serves CORS-open JSON for 60,562 institutions and every country with a
+  26-year time series, and is the most substantial API Curtin engineers itself. The third is
+  identity: Curtin Library runs a Shibboleth SAML 2.0 service provider on its own Kubernetes
+  cluster, registered in the Australian Access Federation and therefore eduGAIN, serving its
+  entity metadata publicly. Curtin's matching Identity Provider carries a curtin.edu.au hostname
+  but CNAMEs into AAF's managed IdP service, so it is recorded as a tenant, a distinction only
+  DNS resolution reveals. Beyond those, Curtin is a buyer rather than a producer. The research
+  repository at curate.curtin.edu.au
+  is a Figshare tenant — espace.curtin.edu.au, which this profile previously described as an Ex
+  Libris Primo/Esploro repository, now hard-redirects there. Library discovery is an Ex Libris
+  Primo/Alma tenant, the LMS is a Blackboard tenant, and the service desk is ServiceNow. Those
+  relationships are recorded here as tenant surfaces because they are genuine institutional facts;
+  the contracts behind them belong to the vendors and are deliberately not saved under Curtin's
+  name.
 type: Index
+x-coverage:
+  state: covered
+  reason: covered
+  detail: >-
+    Three institution-operated surfaces were found live and keyless and are described from probed
+    responses: the mimas/v1 WordPress namespace on www.curtin.edu.au (including an Elasticsearch
+    course search), the COKI open-access API at api.coki.ac, and the Shibboleth SAML 2.0 service
+    provider at auth.lis.curtin.edu.au, which resolves to Curtin's own Kubernetes cluster.
+    Curtin's SAML Identity Provider at idpp1.curtin.edu.au is equally live and equally
+    machine-readable but CNAMEs into AAF's managed IdP service, so it is recorded as a tenant
+    rather than credited as Curtin engineering. A fourth institution-operated surface, the
+    Curtin Data Platform behind
+    data.curtin.edu.au, is real but Cognito-gated and returns 401 to anonymous callers, so it is
+    recorded without a contract. Curtin publishes no developer portal, no OpenAPI, no llms.txt, no
+    apis.json, no security.txt and no status page — none of those absences are inferred, each was
+    probed. The research repository, library discovery and LMS are vendor platforms on Curtin
+    subdomains and are recorded as tenants, not credited as Curtin engineering. Only
+    curate.curtin.edu.au resisted probing: it answers every path with an HTTP 202 AWS WAF
+    challenge and a zero-byte body, which is why no OAI-PMH Identify response could be obtained.
+  evidence:
+    - url: https://www.curtin.edu.au/wp-json/
+      status: 200
+    - url: https://www.curtin.edu.au/wp-json/mimas/v1/search/elastic?query=engineering
+      status: 200
+    - url: https://www.curtin.edu.au/wp-json/mimas/v1/header
+      status: 403
+    - url: https://www.curtin.edu.au/wp-json/mcp/mcp-adapter-default-server
+      status: 401
+    - url: https://api.coki.ac/search/curtin
+      status: 200
+    - url: https://api.coki.ac/institution/02n415q13
+      status: 200
+    - url: https://idpp1.curtin.edu.au/idp/shibboleth
+      status: 200
+    - url: https://auth.lis.curtin.edu.au/Shibboleth.sso/Metadata
+      status: 200
+    - url: https://md.aaf.edu.au/aaf-metadata.xml
+      status: 200
+    - url: https://aefbfwfqc4.execute-api.ap-southeast-2.amazonaws.com/prod/AMP/Catalogs
+      status: 401
+    - url: https://api.datacite.org/providers/curtin
+      status: 200
+    - url: https://espace.curtin.edu.au/
+      status: 301
+    - url: https://curate.curtin.edu.au/
+      status: 202
+    - url: https://www.curtin.edu.au/llms.txt
+      status: 404
+    - url: https://www.curtin.edu.au/.well-known/security.txt
+      status: 404
+    - url: https://www.curtin.edu.au/apis.json
+      status: 404
+    - url: https://api.curtin.edu.au/
+      status: 0
+    - url: https://developer.curtin.edu.au/
+      status: 0
 deliveryModel:
   model: saas
   open_source: false
-  commercial: true
-  callable_host: false
+  commercial: false
+  callable_host: true
   label: Hosted service · you call their endpoint
   confidence: medium
   source:
-  - pricing
-  generated: '2026-08-28'
-  method: derived
+    - probe
+  generated: '2026-08-30'
+  method: probed
 accessModel:
   pricing: free
-  onboarding: unknown
+  onboarding: none
   trial: false
-  try_now: false
-  public: false
-  label: Free
-  confidence: medium
+  try_now: true
+  public: true
+  label: Free · no registration
+  confidence: high
   source:
-  - plans
-  generated: '2026-07-22'
-  method: derived
-position: Consumer
-access: 3rd-Party
+    - probe
+  generated: '2026-08-30'
+  method: probed
+position: Provider
+access: Public
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/curtin.png
 url: https://raw.githubusercontent.com/api-evangelist/curtin/refs/heads/main/apis.yml
 tags:
-  - Education
-  - Higher Education
   - University
+  - Higher Education
+  - Education
   - Research
+  - Open Access
   - Open Data
+  - Course Catalog
   - Library
+  - Identity Federation
+  - Research Data
   - Australia
+  - Western Australia
+  - Australian Technology Network
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-08-30'
 specificationVersion: '0.23'
 apis:
-  - aid: curtin:espace
-    name: Curtin espace Institutional Repository
+  - aid: curtin:web-platform
+    name: Curtin Web Platform API (mimas/v1)
+    x-operator: institution
+    x-operator-evidence: >-
+      Host www.curtin.edu.au is Curtin's own registrable domain; the namespace slug `mimas` is
+      Curtin's own WordPress theme, referenced as /wp-content/themes/mimas/ across
+      www., handbook. and central.curtin.edu.au; the Elasticsearch index behind it is named
+      curtin-learning-offerings-prod-*. www.curtin.edu.au CNAMEs to wp183.host.pressdns.com,
+      which is managed WordPress hosting — infrastructure, not a platform whose contract Curtin
+      runs under. The theme, the routes and the search index are Curtin's, so this stays
+      institution-operated. Recorded because a DNS-resolving audit will keep flagging it.
     description: >-
-      espace is Curtin University's open-access institutional repository of
-      research publications and higher-degree-by-research theses, delivered on
-      the Ex Libris Primo/Esploro discovery platform. Historically the
-      repository exposed an OAI-PMH harvesting interface for metadata; the
-      legacy endpoint now redirects into the Primo discovery layer and no
-      current public, documented API endpoint could be independently confirmed
-      during this review.
-    humanURL: https://espace.curtin.edu.au/
-    tags: [ Repository, Research, Library, OAI-PMH, Metadata ]
+      Curtin's own REST namespace on its public web platform, keyless and live. Serves the global
+      navigation, site menu and footer shared across Curtin's federated WordPress estate, and
+      exposes search/elastic — a raw Elasticsearch proxy over Curtin course and unit learning
+      offerings, making it the university's de-facto public course-catalog search. One endpoint,
+      /mimas/v1/header, is referer-restricted and returns 403. Curtin publishes no description of
+      any of this; the OpenAPI here was derived from live probes and from Curtin's own WordPress
+      REST discovery document. The other 24 namespaces on the same host are WordPress core or
+      plugin vendors and are deliberately not described under Curtin's name.
+    humanURL: https://www.curtin.edu.au/
+    baseURL: https://www.curtin.edu.au/wp-json
+    tags: [ Search, Course Catalog, Elasticsearch, WordPress, Navigation ]
     properties:
+      - type: OpenAPI
+        url: openapi/curtin-web-search-openapi.yml
+      - type: JSONSchema
+        url: json-schema/curtin-web-search-schema.json
+      - type: Examples
+        url: examples/curtin-web-search-elastic-engineering.json
+      - type: Examples
+        url: examples/curtin-web-global-menu.json
+      - type: Examples
+        url: examples/curtin-web-header-403.json
+      - type: Authentication
+        url: authentication/curtin-authentication.yml
+      - type: Errors
+        url: errors/curtin-errors.yml
+      - type: Lifecycle
+        url: lifecycle/curtin-lifecycle.yml
       - type: Documentation
-        url: https://espace.curtin.edu.au/
-  - aid: curtin:researchdata
-    name: Curtin Research Data (via Research Data Australia)
+        url: https://www.curtin.edu.au/wp-json/
+  - aid: curtin:coki
+    name: COKI Open Access Dashboard API
+    x-operator: institution
+    x-operator-evidence: >-
+      Operated by the Curtin Open Knowledge Initiative — GitHub organisation
+      Curtin-Open-Knowledge-Initiative (21 repositories), pipeline
+      github.com/The-Academic-Observatory, donations routed to curtin.edu.au/make-a-gift. The
+      coki.ac domain is COKI's own rather than a curtin.edu.au subdomain, which is why a
+      host-only operator test misses it. No other institution shares the host.
     description: >-
-      Curtin University publishes research data collection records through the
-      national Research Data Australia (RDA) registry operated by the Australian
-      Research Data Commons (ARDC). Curtin's records are discoverable and
-      harvestable through RDA's platform-level interfaces; Curtin itself does
-      not operate a documented public data API for this collection.
+      Curtin's most substantial self-engineered API. Keyless, CORS-open JSON serving open-access
+      performance statistics for 60,562 institutions and every country, keyed on ROR identifiers,
+      with a 26-year per-entity time series and 34 open-access measures per period. Unversioned,
+      undocumented and without a root index — GET / returns 404 — so the OpenAPI here was derived
+      entirely from live probes.
+    humanURL: https://open.coki.ac/
+    baseURL: https://api.coki.ac
+    tags: [ Open Access, Research, Analytics, Bibliometrics, ROR ]
+    properties:
+      - type: OpenAPI
+        url: openapi/curtin-coki-openapi.yml
+      - type: JSONSchema
+        url: json-schema/curtin-coki-entity-schema.json
+      - type: Examples
+        url: examples/curtin-coki-institution-02n415q13.json
+      - type: Examples
+        url: examples/curtin-coki-search-curtin.json
+      - type: Authentication
+        url: authentication/curtin-authentication.yml
+      - type: Errors
+        url: errors/curtin-errors.yml
+      - type: Lifecycle
+        url: lifecycle/curtin-lifecycle.yml
+      - type: Website
+        url: https://open.coki.ac/
+      - type: SourceCode
+        url: https://github.com/The-Academic-Observatory
+  - aid: curtin:identity-sp
+    name: Curtin Library Shibboleth Service Provider
+    x-operator: institution
+    x-operator-evidence: >-
+      auth.lis.curtin.edu.au CNAMEs to elb.prod.library.curtin.edu.au, which resolves to a
+      Curtin-operated Kubernetes/Traefik load balancer in Curtin's own AWS account
+      (k8s-traefik-traefikd-*.ap-southeast-2.elb.amazonaws.com). No vendor sits in the chain.
+      The entity is registered in the Australian Access Federation aggregate with
+      OrganizationDisplayName "Curtin University".
+    description: >-
+      A Shibboleth SAML 2.0 service provider that Curtin Library runs on its own Kubernetes
+      cluster, serving its entity metadata unauthenticated as application/samlmetadata+xml at the
+      standard Shibboleth.sso path. This is the identity component Curtin genuinely engineers and
+      hosts, and it is registered in the Australian Access Federation, and therefore in eduGAIN.
+      Machine-readable institution-operated identity infrastructure is the class of surface
+      universities most often have and least often have catalogued.
+    humanURL: https://auth.lis.curtin.edu.au/Shibboleth.sso/Metadata
+    baseURL: https://auth.lis.curtin.edu.au/Shibboleth.sso
+    tags: [ Identity Federation, SAML, Shibboleth, eduGAIN, Single Sign-On ]
+    properties:
+      - type: IdentityFederation
+        url: https://auth.lis.curtin.edu.au/Shibboleth.sso/Metadata
+      - type: Conformance
+        url: conformance/curtin-conformance.yml
+      - type: Authentication
+        url: authentication/curtin-authentication.yml
+  - aid: curtin:identity-idp
+    name: Curtin University SAML Identity Provider (AAF Managed IdP)
+    x-operator: tenant
+    x-operator-evidence: >-
+      idpp1.curtin.edu.au CNAMEs to 1f0b5d9aaec3f802f7411017de5ea657.idp-cname.aaf.edu.au —
+      the Australian Access Federation's managed Identity Provider service. The hostname, the
+      entityID, the shibmd:Scope (curtin.edu.au) and the identity authority are Curtin's; the
+      Shibboleth deployment underneath is AAF's. A hostname-only verdict reads this as
+      institution-operated and is wrong; only DNS resolution shows it.
+    description: >-
+      Curtin's SAML 2.0 Identity Provider, entityID https://idpp1.curtin.edu.au/idp/shibboleth,
+      registered in the Australian Access Federation and reachable through eduGAIN. It serves its
+      own entity metadata unauthenticated as application/xml and advertises HTTP-POST,
+      HTTP-Redirect and HTTP-POST-SimpleSign SSO bindings. Curtin is the identity authority; AAF
+      operates the service. Recorded as a tenant relationship for that reason, and because it is
+      a real and useful institutional fact rather than something to delete. A second, separate
+      SAML IdP at id.curtin.edu.au (PingAM/ForgeRock, metaAlias /alpha/idp) fronts the
+      Blackboard LMS.
+    humanURL: https://idpp1.curtin.edu.au/idp/shibboleth
+    baseURL: https://idpp1.curtin.edu.au/idp
+    tags: [ Identity Federation, SAML, Shibboleth, eduGAIN, AAF, Tenant ]
+    properties:
+      - type: IdentityFederation
+        url: https://idpp1.curtin.edu.au/idp/shibboleth
+      - type: Metadata
+        url: https://md.aaf.edu.au/aaf-metadata.xml
+      - type: Conformance
+        url: conformance/curtin-conformance.yml
+      - type: Vendor
+        url: https://aaf.edu.au/
+  - aid: curtin:data-platform
+    name: Curtin Data Platform (AMP)
+    x-operator: institution
+    x-operator-evidence: >-
+      data.curtin.edu.au is Curtin's own domain resolving directly to AWS with no vendor CNAME;
+      the API gateway aefbfwfqc4.execute-api.ap-southeast-2.amazonaws.com is a Curtin-account
+      gateway with a Curtin-specific /prod/AMP/ base path, referenced only from Curtin's own
+      front-end bundle.
+    description: >-
+      Curtin's internal data catalog, dashboard and file-search platform — a Remix single-page
+      application at data.curtin.edu.au calling a Curtin-operated AWS API Gateway at
+      /prod/AMP/Catalogs and /prod/AMP/Dashboards, authenticated through an AWS Cognito user pool
+      via Amplify. Both endpoints return HTTP 401 to anonymous callers, so no contract is recorded
+      here. It is listed because it is a genuinely institution-operated API, and its absence from
+      the profile would misstate Curtin's footprint as smaller than it is.
+    humanURL: https://data.curtin.edu.au/
+    baseURL: https://aefbfwfqc4.execute-api.ap-southeast-2.amazonaws.com/prod/AMP
+    tags: [ Open Data, Data Catalog, Dashboards, AWS Cognito, Gated ]
+    properties:
+      - type: OpenData
+        url: https://data.curtin.edu.au/
+      - type: Authentication
+        url: authentication/curtin-authentication.yml
+      - type: Errors
+        url: errors/curtin-errors.yml
+  - aid: curtin:curate
+    name: Curtin Curate Research Repository (Figshare tenant)
+    x-operator: tenant
+    x-operator-evidence: >-
+      curate.curtin.edu.au is a CNAME to proxy-eu-01.figshare.com. Every response is an AWS WAF
+      challenge whose awsWafCookieDomainList is ["figshare.com"]. espace.curtin.edu.au 301s here.
+    description: >-
+      Curtin's institutional research repository, formerly espace on Ex Libris, now running on
+      Figshare at curate.curtin.edu.au. The data, the theses, the DOIs and the tenant are Curtin's;
+      the platform and its API contract are Figshare's. No Figshare specification is saved under
+      Curtin's name — that misattribution, one Figshare contract credited to twenty-five
+      universities, is exactly what this profile exists to avoid. The repository could not be
+      probed at all: every path including /oai, /esploro/oai/request and /api/v2/articles returns
+      HTTP 202 with a zero-byte bot-challenge body. The migration itself appears undocumented, and
+      the legacy OAI-PMH endpoint did not survive it.
+    humanURL: https://curate.curtin.edu.au/
+    tags: [ Research Repository, Figshare, Tenant, Open Access, Theses ]
+    properties:
+      - type: ResearchRepository
+        url: https://curate.curtin.edu.au/
+      - type: Vendor
+        url: https://figshare.com/
+  - aid: curtin:datacite
+    name: Curtin University DOI Registration (DataCite)
+    x-operator: tenant
+    x-operator-evidence: >-
+      DataCite provider id `curtin`, memberType consortium_organization, created 2024-02-08,
+      with a legacy provider `curt`. The records and the DOIs are Curtin's; api.datacite.org is
+      DataCite's contract, shared by every member.
+    description: >-
+      Curtin University is a DataCite member organisation and had minted 3,243 DOIs under its
+      provider at time of probing, across two registered repositories — `ardcx.curtin`, the Curtin
+      University Research Data Collection, and `curtin.repo2`, the WA HeSANDA Node at
+      hesandawa.org. This is Curtin's persistent-identifier practice, exposed through DataCite's
+      public API. The contract belongs to DataCite; the membership and the records are the
+      institution's, which is why it is recorded as a tenant relationship rather than dropped.
+    humanURL: https://api.datacite.org/providers/curtin
+    tags: [ DOI, DataCite, Research Data, Persistent Identifiers, Tenant ]
+    properties:
+      - type: Conformance
+        url: conformance/curtin-conformance.yml
+      - type: Documentation
+        url: https://api.datacite.org/providers/curtin
+      - type: ResearchData
+        url: https://hesandawa.org/
+  - aid: curtin:catalogue
+    name: Curtin Library Discovery (Ex Libris Primo/Alma tenant)
+    x-operator: tenant
+    x-operator-evidence: >-
+      catalogue.curtin.edu.au is a CNAME to curtin.primo.exlibrisgroup.com; the discovery view
+      identifier is 61CUR_INST:CUR_ALMA, an Ex Libris Alma institution code.
+    description: >-
+      Curtin Library's discovery layer, running on Ex Libris Primo over Alma. The collection and
+      the holdings are Curtin's; the platform, its APIs and its contracts are Ex Libris's and are
+      not saved here. Recorded because the tenancy is a real institutional fact and one of the few
+      programmable surfaces the library has.
+    humanURL: https://catalogue.curtin.edu.au/discovery/search?vid=61CUR_INST:CUR_ALMA
+    tags: [ Library, Discovery, Ex Libris, Primo, Alma, Tenant ]
+    properties:
+      - type: LibraryCatalog
+        url: https://catalogue.curtin.edu.au/discovery/search?vid=61CUR_INST:CUR_ALMA
+      - type: Vendor
+        url: https://developers.exlibrisgroup.com/
+  - aid: curtin:lms
+    name: Curtin Blackboard Learn (tenant)
+    x-operator: tenant
+    x-operator-evidence: lms.curtin.edu.au is a CNAME to curtin.blackboard.com.
+    description: >-
+      Curtin's learning management system, a Blackboard Learn tenant fronted by Curtin's own
+      PingAM SAML identity provider at id.curtin.edu.au. Any LTI, Caliper or QTI conformance here
+      is Blackboard's product behaviour, not Curtin's engineering, and is explicitly not credited
+      to the institution in conformance/curtin-conformance.yml.
+    humanURL: https://lms.curtin.edu.au/
+    tags: [ LMS, Blackboard, Teaching, Tenant, LTI ]
+    properties:
+      - type: Vendor
+        url: https://developer.blackboard.com/
+  - aid: curtin:researchdata
+    name: Curtin Research Data in Research Data Australia (ARDC)
+    x-operator: tenant
+    x-operator-evidence: >-
+      researchdata.edu.au is operated by the Australian Research Data Commons and is shared by
+      every contributing Australian institution. Curtin is one contributor among many.
+    description: >-
+      Curtin contributes research data collection records to Research Data Australia, the national
+      registry run by the Australian Research Data Commons. The records are Curtin's; the registry,
+      its harvesting interfaces and its API are ARDC's. Previously recorded here without an
+      operator, which read as though Curtin published the interface.
     humanURL: https://researchdata.edu.au/contributors/curtin-university
-    tags: [ Research, Open Data, Datasets, Metadata ]
+    tags: [ Research Data, ARDC, National Registry, Metadata, Tenant ]
     properties:
       - type: Documentation
         url: https://researchdata.edu.au/contributors/curtin-university
 common:
-  - type: DomainSecurity
-    url: security/curtin-domain-security.yml
   - type: Website
     url: https://www.curtin.edu.au/
-  - type: GitHub
+  - type: Website
+    url: https://open.coki.ac/
+  - type: APIReference
+    url: https://www.curtin.edu.au/wp-json/
+  - type: OpenData
+    url: https://data.curtin.edu.au/
+  - type: ResearchRepository
+    url: https://curate.curtin.edu.au/
+  - type: LibraryCatalog
+    url: https://catalogue.curtin.edu.au/discovery/search?vid=61CUR_INST:CUR_ALMA
+  - type: CourseCatalog
+    url: https://handbook.curtin.edu.au/
+  - type: IdentityFederation
+    url: https://auth.lis.curtin.edu.au/Shibboleth.sso/Metadata
+  - type: IdentityFederation
+    url: https://idpp1.curtin.edu.au/idp/shibboleth
+  - type: ResearchComputing
+    url: https://datascience.curtin.edu.au/
+  - type: AIPolicy
+    url: https://www.curtin.edu.au/about/values-vision-strategy/artificial-intelligence/
+  - type: AITooling
+    url: https://www.curtin.edu.au/students/essentials/rights/academic-integrity/gen-ai/
+  - type: GitHubOrganization
     url: https://github.com/CurtinIDS
-  - type: GitHub
+  - type: GitHubOrganization
     url: https://github.com/Curtin-Open-Knowledge-Initiative
+  - type: GitHubOrganization
+    url: https://github.com/The-Academic-Observatory
+  - type: TermsOfService
+    url: https://www.curtin.edu.au/disclaimer-of-liability/
+  - type: PrivacyPolicy
+    url: https://www.curtin.edu.au/about/governance/privacy/
+  - type: License
+    url: https://www.curtin.edu.au/copyright-statement/
+  - type: Support
+    url: https://www.curtin.edu.au/about/contact/
+  - type: Blog
+    url: https://www.curtin.edu.au/news/
   - type: LinkedIn
     url: https://www.linkedin.com/school/curtin-university/
+  - type: Conformance
+    url: conformance/curtin-conformance.yml
+  - type: Authentication
+    url: authentication/curtin-authentication.yml
+  - type: Errors
+    url: errors/curtin-errors.yml
+  - type: Lifecycle
+    url: lifecycle/curtin-lifecycle.yml
+  - type: DomainSecurity
+    url: security/curtin-domain-security.yml
   - type: Plans
     url: plans/curtin-plans-pricing.yml
   - type: RateLimits
