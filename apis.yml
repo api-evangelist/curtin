@@ -149,6 +149,12 @@ apis:
   - SAML
   - Shibboleth
   - eduGAIN
+  - SSO
+  tags_raw:
+  - Identity Federation
+  - SAML
+  - Shibboleth
+  - eduGAIN
   - Single Sign-On
   properties:
   - type: IdentityFederation
@@ -177,6 +183,13 @@ apis:
   humanURL: https://idpp1.curtin.edu.au/idp/shibboleth
   baseURL: https://idpp1.curtin.edu.au/idp
   tags:
+  - Identity Federation
+  - SAML
+  - Shibboleth
+  - eduGAIN
+  - AAF
+  - Tenants
+  tags_raw:
   - Identity Federation
   - SAML
   - Shibboleth
@@ -238,6 +251,12 @@ apis:
   tags:
   - Research Repository
   - Figshare
+  - Tenants
+  - Open Access
+  - Theses
+  tags_raw:
+  - Research Repository
+  - Figshare
   - Tenant
   - Open Access
   - Theses
@@ -262,6 +281,12 @@ apis:
     than dropped.
   humanURL: https://api.datacite.org/providers/curtin
   tags:
+  - DOI
+  - DataCite
+  - Research Data
+  - Persistent Identifiers
+  - Tenants
+  tags_raw:
   - DOI
   - DataCite
   - Research Data
@@ -292,6 +317,13 @@ apis:
   - Ex Libris
   - Primo
   - Alma
+  - Tenants
+  tags_raw:
+  - Library
+  - Discovery
+  - Ex Libris
+  - Primo
+  - Alma
   - Tenant
   properties:
   - type: LibraryCatalog
@@ -308,6 +340,12 @@ apis:
     behaviour, not Curtin's engineering, and is explicitly not credited to the institution in conformance/curtin-conformance.yml.
   humanURL: https://lms.curtin.edu.au/
   tags:
+  - LMS
+  - Blackboard
+  - Teaching
+  - Tenants
+  - LTI
+  tags_raw:
   - LMS
   - Blackboard
   - Teaching
@@ -329,6 +367,12 @@ apis:
     Curtin published the interface.
   humanURL: https://researchdata.edu.au/contributors/curtin-university
   tags:
+  - Research Data
+  - ARDC
+  - National Registry
+  - Metadata
+  - Tenants
+  tags_raw:
   - Research Data
   - ARDC
   - National Registry
