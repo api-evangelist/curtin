@@ -1,0 +1,175 @@
+openapi: 3.2.0
+info:
+  title: Curtin University Web Platform API (mimas/v1) Navigation API
+  version: '1.0'
+  summary: Curtin's own WordPress REST namespace for site chrome and Elasticsearch-backed site and course search.
+  description: '`mimas/v1` is the bespoke REST namespace registered by Curtin University''s own `mimas` WordPress theme on www.curtin.edu.au.'
+  contact:
+    name: Curtin University
+    url: https://about.curtin.edu.au/contact/
+  license:
+    name: Curtin University copyright statement
+    url: https://www.curtin.edu.au/copyright-statement/
+  termsOfService: https://www.curtin.edu.au/disclaimer-of-liability/
+  x-operator: institution
+  x-operator-evidence: Host www.curtin.edu.au is Curtin University's own registrable domain. The namespace slug `mimas` is Curtin's WordPress theme (referenced as /wp-content/themes/mimas/ on www.curtin.edu.au, handbook.curtin.edu.au and central.curtin.edu.au). The Elasticsearch index name returned by search/elastic is `curtin-learning-offerings-prod-v20260830170034`.
+  x-provenance:
+    method: derived
+    generated: '2026-08-30'
+    source:
+    - https://www.curtin.edu.au/wp-json/
+    - https://www.curtin.edu.au/wp-json/mimas/v1
+    - https://www.curtin.edu.au/wp-json/mimas/v1/search/elastic?query=engineering
+    note: Derived from live keyless probes on 2026-08-30 plus the route table in Curtin's own WordPress REST discovery document. Not published by Curtin. No endpoint, parameter or response shape here was assumed — each was observed returning HTTP 200 except mimas/v1/header, recorded as the 403 it actually returns.
+servers:
+- url: https://www.curtin.edu.au/wp-json
+  description: Production — Curtin University public web platform
+tags:
+- name: Navigation
+  description: Global navigation, site menu and footer used across the Curtin WordPress estate
+paths:
+  /mimas/v1:
+    get:
+      operationId: getNamespaceIndex
+      summary: Namespace route index
+      description: WordPress REST namespace discovery document for `mimas/v1`.
+      tags:
+      - Navigation
+      responses:
+        '200':
+          description: Namespace index
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  namespace:
+                    type: string
+                    examples:
+                    - mimas/v1
+                  routes:
+                    type: object
+                    additionalProperties: true
+  /mimas/v1/global-menu:
+    get:
+      operationId: getGlobalMenu
+      summary: Global navigation tree
+      description: Structured global navigation for the Curtin web estate — a nested menu tree, roughly 240 KB at time of probing.
+      tags:
+      - Navigation
+      responses:
+        '200':
+          description: Global menu tree
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuTree'
+  /mimas/v1/global-menu/html:
+    get:
+      operationId: getGlobalMenuHtml
+      summary: Global navigation, pre-rendered
+      description: Returns the same navigation as a JSON string of rendered HTML.
+      tags:
+      - Navigation
+      responses:
+        '200':
+          description: HTML fragment, JSON-string encoded
+          content:
+            application/json:
+              schema:
+                type: string
+  /mimas/v1/site-menu:
+    get:
+      operationId: getSiteMenu
+      summary: Per-site menu
+      description: Per-site navigation. On www.curtin.edu.au this returns the JSON literal `false` — the root site has no site-level menu distinct from the global one.
+      tags:
+      - Navigation
+      responses:
+        '200':
+          description: Site menu, or `false` when the site has none
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/MenuTree'
+                - type: boolean
+  /mimas/v1/footer:
+    get:
+      operationId: getFooter
+      summary: Global footer
+      tags:
+      - Navigation
+      responses:
+        '200':
+          description: Footer HTML wrapped in a JSON object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  html:
+                    type: string
+  /mimas/v1/header:
+    get:
+      operationId: getHeader
+      summary: Global header (referer-restricted)
+      description: 'Declared in Curtin''s route table but not publicly callable. Returns HTTP 403 `rest_forbidden` with the message "Access denied: This endpoint can only be accessed from allowed domains." Documented here because the restriction is the fact, not a gap.'
+      tags:
+      - Navigation
+      responses:
+        '403':
+          description: Origin/domain not on Curtin's allow list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WpRestError'
+components:
+  schemas:
+    WpRestError:
+      type: object
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_forbidden
+        message:
+          type: string
+        data:
+          oneOf:
+          - type: object
+            properties:
+              status:
+                type: integer
+          - type: 'null'
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        parent_id:
+          oneOf:
+          - type: integer
+          - type: boolean
+        class:
+          type: string
+        target:
+          type: string
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+    MenuTree:
+      type: object
+      properties:
+        menus:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'

@@ -1,0 +1,297 @@
+# x-archived-from: curtin-web-search-openapi.yml
+# x-archived-on: 2026-09-16
+openapi: 3.1.0
+info:
+  title: Curtin University Web Platform API (mimas/v1)
+  version: '1.0'
+  summary: Curtin's own WordPress REST namespace for site chrome and Elasticsearch-backed site and course search.
+  description: >-
+    `mimas/v1` is the bespoke REST namespace registered by Curtin University's own `mimas`
+    WordPress theme on www.curtin.edu.au. It is not WordPress core and it is not a plugin
+    vendor's namespace: the theme, the routes and the Elasticsearch indices behind them are
+    Curtin's. The namespace serves the global navigation and footer that the university's
+    federated WordPress estate (www., about., central., staffportal., handbook.) renders, and
+    exposes `search/elastic`, a keyless read-only proxy onto Curtin's Elasticsearch cluster.
+    That search index is `curtin-learning-offerings-prod-*` — Curtin course and unit learning
+    offerings — which makes this the university's de-facto public course-catalog search surface.
+
+    This document was DERIVED by probing the live, unauthenticated endpoints and by reading the
+    route table Curtin's own WordPress REST discovery document publishes at
+    https://www.curtin.edu.au/wp-json/. Curtin does not publish an OpenAPI description of it.
+    Only the `mimas/v1` namespace is described here. The 24 other namespaces on that host are
+    WordPress core (`wp/v2`), plugin vendors (iThemes Security, Forminator, Kadence, Akismet,
+    Oasis Workflow, WPMU DEV) or the WordPress MCP adapter, and none of them are Curtin's
+    engineering — describing them under Curtin's name would credit the university for a
+    contract it did not write.
+  contact:
+    name: Curtin University
+    url: https://about.curtin.edu.au/contact/
+  license:
+    name: Curtin University copyright statement
+    url: https://www.curtin.edu.au/copyright-statement/
+  termsOfService: https://www.curtin.edu.au/disclaimer-of-liability/
+  x-operator: institution
+  x-operator-evidence: >-
+    Host www.curtin.edu.au is Curtin University's own registrable domain. The namespace slug
+    `mimas` is Curtin's WordPress theme (referenced as /wp-content/themes/mimas/ on
+    www.curtin.edu.au, handbook.curtin.edu.au and central.curtin.edu.au). The Elasticsearch
+    index name returned by search/elastic is `curtin-learning-offerings-prod-v20260830170034`.
+  x-provenance:
+    method: derived
+    generated: '2026-08-30'
+    source:
+      - https://www.curtin.edu.au/wp-json/
+      - https://www.curtin.edu.au/wp-json/mimas/v1
+      - https://www.curtin.edu.au/wp-json/mimas/v1/search/elastic?query=engineering
+    note: >-
+      Derived from live keyless probes on 2026-08-30 plus the route table in Curtin's own WordPress
+      REST discovery document. Not published by Curtin. No endpoint, parameter or response shape
+      here was assumed — each was observed returning HTTP 200 except mimas/v1/header, recorded as
+      the 403 it actually returns.
+servers:
+  - url: https://www.curtin.edu.au/wp-json
+    description: Production — Curtin University public web platform
+tags:
+  - name: Search
+    description: Elasticsearch-backed site and course-catalog search
+  - name: Navigation
+    description: Global navigation, site menu and footer used across the Curtin WordPress estate
+paths:
+  /mimas/v1:
+    get:
+      operationId: getNamespaceIndex
+      summary: Namespace route index
+      description: WordPress REST namespace discovery document for `mimas/v1`.
+      tags: [Navigation]
+      responses:
+        '200':
+          description: Namespace index
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  namespace: { type: string, examples: ['mimas/v1'] }
+                  routes: { type: object, additionalProperties: true }
+  /mimas/v1/search/elastic:
+    get:
+      operationId: searchElastic
+      summary: Search Curtin content and course offerings
+      description: >-
+        Keyless read-only search. Returns a raw Elasticsearch response body. With no `query`
+        parameter, or with any parameter name other than `query`, the endpoint returns an empty
+        JSON array (`[]`) rather than an error — a soft-empty, not a 4xx. The index searched at
+        the time of probing was `curtin-learning-offerings-prod-*`, Curtin course and unit
+        learning offerings.
+      tags: [Search]
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: Free-text search term. Omitting it yields `[]`, not an error.
+          schema: { type: string }
+          example: engineering
+        - name: facet
+          in: query
+          required: false
+          description: >-
+            Restrict results to one search tab. Valid values are published by
+            `/mimas/v1/search/facets`; `Courses` and `People` were both observed returning results.
+          schema: { type: string }
+          example: Courses
+      responses:
+        '200':
+          description: Elasticsearch response, or `[]` when no `query` was supplied
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ElasticSearchResponse'
+                  - type: array
+                    maxItems: 0
+                    items: {}
+                    description: Empty array returned when `query` is absent
+  /mimas/v1/search/facets:
+    get:
+      operationId: getSearchFacets
+      summary: Search facet pills
+      description: >-
+        Returns a JSON *string* containing an HTML `<ul>` of the facet values accepted by
+        `search/elastic`. Observed values include `Courses` and `People`. This is a
+        presentation-shaped response, not structured data.
+      tags: [Search]
+      responses:
+        '200':
+          description: HTML fragment, JSON-string encoded
+          content:
+            application/json:
+              schema: { type: string }
+  /mimas/v1/search/quick-links:
+    get:
+      operationId: getSearchQuickLinks
+      summary: Search overlay quick links
+      description: Returns a JSON string containing an HTML list of Curtin quick links.
+      tags: [Search]
+      responses:
+        '200':
+          description: HTML fragment, JSON-string encoded
+          content:
+            application/json:
+              schema: { type: string }
+  /mimas/v1/global-menu:
+    get:
+      operationId: getGlobalMenu
+      summary: Global navigation tree
+      description: >-
+        Structured global navigation for the Curtin web estate — a nested menu tree, roughly
+        240 KB at time of probing.
+      tags: [Navigation]
+      responses:
+        '200':
+          description: Global menu tree
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MenuTree' }
+  /mimas/v1/global-menu/html:
+    get:
+      operationId: getGlobalMenuHtml
+      summary: Global navigation, pre-rendered
+      description: Returns the same navigation as a JSON string of rendered HTML.
+      tags: [Navigation]
+      responses:
+        '200':
+          description: HTML fragment, JSON-string encoded
+          content:
+            application/json:
+              schema: { type: string }
+  /mimas/v1/site-menu:
+    get:
+      operationId: getSiteMenu
+      summary: Per-site menu
+      description: >-
+        Per-site navigation. On www.curtin.edu.au this returns the JSON literal `false` — the
+        root site has no site-level menu distinct from the global one.
+      tags: [Navigation]
+      responses:
+        '200':
+          description: Site menu, or `false` when the site has none
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/MenuTree'
+                  - type: boolean
+  /mimas/v1/footer:
+    get:
+      operationId: getFooter
+      summary: Global footer
+      tags: [Navigation]
+      responses:
+        '200':
+          description: Footer HTML wrapped in a JSON object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  html: { type: string }
+  /mimas/v1/header:
+    get:
+      operationId: getHeader
+      summary: Global header (referer-restricted)
+      description: >-
+        Declared in Curtin's route table but not publicly callable. Returns HTTP 403
+        `rest_forbidden` with the message "Access denied: This endpoint can only be accessed
+        from allowed domains." Documented here because the restriction is the fact, not a gap.
+      tags: [Navigation]
+      responses:
+        '403':
+          description: Origin/domain not on Curtin's allow list
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WpRestError' }
+components:
+  schemas:
+    ElasticSearchResponse:
+      type: object
+      description: Raw Elasticsearch search response as returned by Curtin's cluster.
+      properties:
+        took: { type: integer, description: Query time in milliseconds }
+        timed_out: { type: boolean }
+        _shards:
+          type: object
+          properties:
+            total: { type: integer }
+            successful: { type: integer }
+            skipped: { type: integer }
+            failed: { type: integer }
+        hits:
+          type: object
+          properties:
+            total:
+              type: object
+              properties:
+                value: { type: integer }
+                relation: { type: string, examples: ['eq'] }
+            hits:
+              type: array
+              items: { $ref: '#/components/schemas/ElasticHit' }
+        suggest: { type: object, additionalProperties: true }
+    ElasticHit:
+      type: object
+      properties:
+        _index:
+          type: string
+          description: Curtin Elasticsearch index, e.g. curtin-learning-offerings-prod-v20260830170034
+        _id: { type: string, examples: ['SPUC-INOPMv1'] }
+        _score: { type: number }
+        _ignored:
+          type: array
+          items: { type: string }
+        _source:
+          type: object
+          properties:
+            search_tab: { type: string, examples: ['Courses'] }
+            content_type: { type: string, examples: ['Course'] }
+        highlight:
+          type: object
+          properties:
+            search_as_you_type:
+              type: array
+              items: { type: string }
+    MenuTree:
+      type: object
+      properties:
+        menus:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              items:
+                type: array
+                items: { $ref: '#/components/schemas/MenuItem' }
+    MenuItem:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        parent_id:
+          oneOf:
+            - { type: integer }
+            - { type: boolean }
+        class: { type: string }
+        target: { type: string }
+        children:
+          type: array
+          items: { $ref: '#/components/schemas/MenuItem' }
+    WpRestError:
+      type: object
+      properties:
+        code: { type: string, examples: ['rest_forbidden'] }
+        message: { type: string }
+        data:
+          oneOf:
+            - type: object
+              properties:
+                status: { type: integer }
+            - type: 'null'

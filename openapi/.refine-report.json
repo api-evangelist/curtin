@@ -1,0 +1,32 @@
+{
+  "provider": "curtin",
+  "sources": [
+    "_original/curtin-coki-openapi.yml",
+    "_original/curtin-web-search-openapi.yml"
+  ],
+  "outputs": [
+    "curtin-countries-api-openapi.yml",
+    "curtin-institutions-api-openapi.yml",
+    "curtin-search-api-openapi.yml",
+    "curtin-navigation-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "2 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "curtin-coki-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "curtin-web-search-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'Search' spans 2 source specs (curtin-coki-openapi.yml, curtin-web-search-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/curtin-web-search-openapi_2.yml: archived document superseded by a larger archived document",
+    "_original/curtin-coki-openapi_2.yml: archived document superseded by a larger archived document",
+    "curtin-countries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "curtin-institutions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "curtin-navigation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "curtin-search-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

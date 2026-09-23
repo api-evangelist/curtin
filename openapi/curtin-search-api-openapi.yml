@@ -1,0 +1,328 @@
+openapi: 3.2.0
+info:
+  title: Curtin Search API
+  version: '1.0'
+  x-operator: institution
+  x-refined-note:
+  - x-operator-evidence differs across the merged source definitions and was not carried
+  - x-provenance differs across the merged source definitions and was not carried
+  description: 'Operations tagged Search across 2 of this provider''s published API definitions: curtin-coki-openapi.yml, curtin-web-search-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.coki.ac
+  description: Production — Curtin Open Knowledge Initiative
+- url: https://www.curtin.edu.au/wp-json
+  description: Production — Curtin University public web platform
+tags:
+- name: Search
+paths:
+  /search/{text}:
+    get:
+      operationId: search
+      summary: Search institutions and countries by name
+      tags:
+      - Search
+      parameters:
+      - name: text
+        in: path
+        required: true
+        schema:
+          type: string
+        example: curtin
+      responses:
+        '200':
+          description: Paged list of matching entities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityPage'
+        '404':
+          description: Plain-text `Not found`
+          content:
+            application/json:
+              schema:
+                type: string
+                examples:
+                - Not found
+    servers:
+    - url: https://api.coki.ac
+      description: Production — Curtin Open Knowledge Initiative
+  /mimas/v1/search/elastic:
+    get:
+      operationId: searchElastic
+      summary: Search Curtin content and course offerings
+      description: Keyless read-only search. Returns a raw Elasticsearch response body. With no `query` parameter, or with any parameter name other than `query`, the endpoint returns an empty JSON array (`[]`) rather than an error — a soft-empty, not a 4xx. The index searched at the time of probing was `curtin-learning-offerings-prod-*`, Curtin course and unit learning offerings.
+      tags:
+      - Search
+      parameters:
+      - name: query
+        in: query
+        required: true
+        description: Free-text search term. Omitting it yields `[]`, not an error.
+        schema:
+          type: string
+        example: engineering
+      - name: facet
+        in: query
+        required: false
+        description: Restrict results to one search tab. Valid values are published by `/mimas/v1/search/facets`; `Courses` and `People` were both observed returning results.
+        schema:
+          type: string
+        example: Courses
+      responses:
+        '200':
+          description: Elasticsearch response, or `[]` when no `query` was supplied
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/ElasticSearchResponse'
+                - type: array
+                  maxItems: 0
+                  items: {}
+                  description: Empty array returned when `query` is absent
+    servers:
+    - url: https://www.curtin.edu.au/wp-json
+      description: Production — Curtin University public web platform
+  /mimas/v1/search/facets:
+    get:
+      operationId: getSearchFacets
+      summary: Search facet pills
+      description: 'Returns a JSON *string* containing an HTML `
+
+        ` of the facet values accepted by `search/elastic`. Observed values include `Courses` and `People`. This is a presentation-shaped response, not structured data.'
+      tags:
+      - Search
+      responses:
+        '200':
+          description: HTML fragment, JSON-string encoded
+          content:
+            application/json:
+              schema:
+                type: string
+    servers:
+    - url: https://www.curtin.edu.au/wp-json
+      description: Production — Curtin University public web platform
+  /mimas/v1/search/quick-links:
+    get:
+      operationId: getSearchQuickLinks
+      summary: Search overlay quick links
+      description: Returns a JSON string containing an HTML list of Curtin quick links.
+      tags:
+      - Search
+      responses:
+        '200':
+          description: HTML fragment, JSON-string encoded
+          content:
+            application/json:
+              schema:
+                type: string
+    servers:
+    - url: https://www.curtin.edu.au/wp-json
+      description: Production — Curtin University public web platform
+components:
+  schemas:
+    EntityPage:
+      type: object
+      required:
+      - items
+      - nItems
+      - page
+      - nPages
+      - limit
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitySummary'
+        nItems:
+          type: integer
+          examples:
+          - 60562
+        page:
+          type: integer
+        nPages:
+          type: integer
+        limit:
+          type: integer
+        orderBy:
+          type: string
+        orderDir:
+          type: string
+    EntitySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ROR suffix for institutions
+          ISO alpha-3 for countries: null
+        entity_type:
+          type: string
+          enum:
+          - institution
+          - country
+        name:
+          type: string
+        logo_sm:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        country_code:
+          type: string
+        country_name:
+          type: string
+        institution_type:
+          type: string
+        weighted_rank:
+          type: number
+        stats:
+          $ref: '#/components/schemas/Stats'
+    Stats:
+      type: object
+      description: Open-access counts (`n_`) and percentages (`p_`) for one entity and period. Field set observed live; every `n_` field has a matching `p_` field.
+      properties:
+        n_citations:
+          type: integer
+        n_outputs:
+          type: integer
+        n_outputs_open:
+          type: integer
+        n_outputs_publisher_open:
+          type: integer
+        n_outputs_publisher_open_only:
+          type: integer
+        n_outputs_both:
+          type: integer
+        n_outputs_other_platform_open:
+          type: integer
+        n_outputs_other_platform_open_only:
+          type: integer
+        n_outputs_closed:
+          type: integer
+        n_outputs_oa_journal:
+          type: integer
+        n_outputs_hybrid:
+          type: integer
+        n_outputs_no_guarantees:
+          type: integer
+        n_outputs_preprint:
+          type: integer
+        n_outputs_domain:
+          type: integer
+        n_outputs_institution:
+          type: integer
+        n_outputs_public:
+          type: integer
+        n_outputs_other_internet:
+          type: integer
+        n_outputs_black:
+          type: integer
+        p_outputs_open:
+          type: number
+        p_outputs_publisher_open:
+          type: number
+        p_outputs_publisher_open_only:
+          type: number
+        p_outputs_both:
+          type: number
+        p_outputs_other_platform_open:
+          type: number
+        p_outputs_other_platform_open_only:
+          type: number
+        p_outputs_closed:
+          type: number
+        p_outputs_oa_journal:
+          type: number
+        p_outputs_hybrid:
+          type: number
+        p_outputs_no_guarantees:
+          type: number
+        p_outputs_preprint:
+          type: number
+        p_outputs_domain:
+          type: number
+        p_outputs_institution:
+          type: number
+        p_outputs_public:
+          type: number
+        p_outputs_other_internet:
+          type: number
+        p_outputs_black:
+          type: number
+    ElasticSearchResponse:
+      type: object
+      description: Raw Elasticsearch search response as returned by Curtin's cluster.
+      properties:
+        took:
+          type: integer
+          description: Query time in milliseconds
+        timed_out:
+          type: boolean
+        _shards:
+          type: object
+          properties:
+            total:
+              type: integer
+            successful:
+              type: integer
+            skipped:
+              type: integer
+            failed:
+              type: integer
+        hits:
+          type: object
+          properties:
+            total:
+              type: object
+              properties:
+                value:
+                  type: integer
+                relation:
+                  type: string
+                  examples:
+                  - eq
+            hits:
+              type: array
+              items:
+                $ref: '#/components/schemas/ElasticHit'
+        suggest:
+          type: object
+          additionalProperties: true
+    ElasticHit:
+      type: object
+      properties:
+        _index:
+          type: string
+          description: Curtin Elasticsearch index, e.g. curtin-learning-offerings-prod-v20260830170034
+        _id:
+          type: string
+          examples:
+          - SPUC-INOPMv1
+        _score:
+          type: number
+        _ignored:
+          type: array
+          items:
+            type: string
+        _source:
+          type: object
+          properties:
+            search_tab:
+              type: string
+              examples:
+              - Courses
+            content_type:
+              type: string
+              examples:
+              - Course
+        highlight:
+          type: object
+          properties:
+            search_as_you_type:
+              type: array
+              items:
+                type: string
+x-refined-from:
+- curtin-coki-openapi.yml
+- curtin-web-search-openapi.yml

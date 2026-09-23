@@ -1,0 +1,284 @@
+openapi: 3.2.0
+info:
+  title: COKI Open Access Dashboard Countries API
+  version: '1.0'
+  summary: Curtin Open Knowledge Initiative's public open-access analytics API covering ~60,000 institutions and every country.
+  description: The Curtin Open Knowledge Initiative (COKI) is a research programme of Curtin University.
+  contact:
+    name: Curtin Open Knowledge Initiative
+    url: https://open.coki.ac/
+  x-operator: institution
+  x-operator-evidence: '"Curtin Open Knowledge Initiative" is the registered GitHub organisation (github.com/Curtin-Open-Knowledge-Initiative, 21 public repositories, described as "Code and resources from the Curtin Open Knowledge Initiative"); open.coki.ac links donations to curtin.edu.au/make-a-gift; the underlying pipeline is github.com/The-Academic-Observatory, Curtin''s Academic Observatory. No other institution operates or shares this host.'
+  x-provenance:
+    method: derived
+    generated: '2026-08-30'
+    source:
+    - https://api.coki.ac/search/curtin
+    - https://api.coki.ac/institutions?limit=2
+    - https://api.coki.ac/countries
+    - https://api.coki.ac/institution/02n415q13
+    - https://api.coki.ac/country/AUS
+    note: Derived from live keyless probes. api.coki.ac publishes no OpenAPI, no /docs and no root index (GET / returns 404 "Not found"), so route discovery was by probe.
+servers:
+- url: https://api.coki.ac
+  description: Production — Curtin Open Knowledge Initiative
+tags:
+- name: Countries
+paths:
+  /countries:
+    get:
+      operationId: listCountries
+      summary: List countries
+      tags:
+      - Countries
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: orderBy
+        in: query
+        schema:
+          type: string
+      - name: orderDir
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - dsc
+      responses:
+        '200':
+          description: Paged country list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityPage'
+  /country/{id}:
+    get:
+      operationId: getCountry
+      summary: Get one country by ISO 3166-1 alpha-3 code
+      tags:
+      - Countries
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: AUS
+      responses:
+        '200':
+          description: Country entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+        '404':
+          description: Plain-text `Not found`
+          content:
+            application/json:
+              schema:
+                type: string
+                examples:
+                - Not found
+components:
+  schemas:
+    Stats:
+      type: object
+      description: Open-access counts (`n_`) and percentages (`p_`) for one entity and period. Field set observed live; every `n_` field has a matching `p_` field.
+      properties:
+        n_citations:
+          type: integer
+        n_outputs:
+          type: integer
+        n_outputs_open:
+          type: integer
+        n_outputs_publisher_open:
+          type: integer
+        n_outputs_publisher_open_only:
+          type: integer
+        n_outputs_both:
+          type: integer
+        n_outputs_other_platform_open:
+          type: integer
+        n_outputs_other_platform_open_only:
+          type: integer
+        n_outputs_closed:
+          type: integer
+        n_outputs_oa_journal:
+          type: integer
+        n_outputs_hybrid:
+          type: integer
+        n_outputs_no_guarantees:
+          type: integer
+        n_outputs_preprint:
+          type: integer
+        n_outputs_domain:
+          type: integer
+        n_outputs_institution:
+          type: integer
+        n_outputs_public:
+          type: integer
+        n_outputs_other_internet:
+          type: integer
+        n_outputs_black:
+          type: integer
+        p_outputs_open:
+          type: number
+        p_outputs_publisher_open:
+          type: number
+        p_outputs_publisher_open_only:
+          type: number
+        p_outputs_both:
+          type: number
+        p_outputs_other_platform_open:
+          type: number
+        p_outputs_other_platform_open_only:
+          type: number
+        p_outputs_closed:
+          type: number
+        p_outputs_oa_journal:
+          type: number
+        p_outputs_hybrid:
+          type: number
+        p_outputs_no_guarantees:
+          type: number
+        p_outputs_preprint:
+          type: number
+        p_outputs_domain:
+          type: number
+        p_outputs_institution:
+          type: number
+        p_outputs_public:
+          type: number
+        p_outputs_other_internet:
+          type: number
+        p_outputs_black:
+          type: number
+    EntityPage:
+      type: object
+      required:
+      - items
+      - nItems
+      - page
+      - nPages
+      - limit
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitySummary'
+        nItems:
+          type: integer
+          examples:
+          - 60562
+        page:
+          type: integer
+        nPages:
+          type: integer
+        limit:
+          type: integer
+        orderBy:
+          type: string
+        orderDir:
+          type: string
+    EntitySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ROR suffix for institutions
+          ISO alpha-3 for countries: null
+        entity_type:
+          type: string
+          enum:
+          - institution
+          - country
+        name:
+          type: string
+        logo_sm:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        country_code:
+          type: string
+        country_name:
+          type: string
+        institution_type:
+          type: string
+        weighted_rank:
+          type: number
+        stats:
+          $ref: '#/components/schemas/Stats'
+    Entity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: object
+          properties:
+            text:
+              type: string
+            license:
+              type: string
+            url:
+              type: string
+        entity_type:
+          type: string
+        logo_sm:
+          type: string
+        logo_md:
+          type: string
+        logo_lg:
+          type: string
+        url:
+          type: string
+        wikipedia_url:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        country_code:
+          type: string
+        country_name:
+          type: string
+        institution_type:
+          type: string
+        start_year:
+          type: integer
+        end_year:
+          type: integer
+        acronyms:
+          type: array
+          items:
+            type: string
+        repositories:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        stats:
+          $ref: '#/components/schemas/Stats'
+        years:
+          type: array
+          description: Per-year time series; 26 entries observed for Curtin University.
+          items:
+            type: object
+            properties:
+              year:
+                type: integer
+              date:
+                type: string
+              stats:
+                $ref: '#/components/schemas/Stats'
