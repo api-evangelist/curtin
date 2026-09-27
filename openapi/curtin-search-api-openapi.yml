@@ -6,7 +6,8 @@ info:
   x-refined-note:
   - x-operator-evidence differs across the merged source definitions and was not carried
   - x-provenance differs across the merged source definitions and was not carried
-  description: 'Operations tagged Search across 2 of this provider''s published API definitions: curtin-coki-openapi.yml, curtin-web-search-openapi.yml. Each path carries the servers of the definition it was published in.'
+  - x-refined-note differs across the merged source definitions and was not carried
+  description: 'Operations tagged Search across 2 of this provider''s published API definitions: curtin-coki-openapi.yml, curtin-search-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.coki.ac
   description: Production — Curtin Open Knowledge Initiative
@@ -47,6 +48,9 @@ paths:
     - url: https://api.coki.ac
       description: Production — Curtin Open Knowledge Initiative
   /mimas/v1/search/elastic:
+    servers:
+    - url: https://www.curtin.edu.au/wp-json
+      description: Production — Curtin University public web platform
     get:
       operationId: searchElastic
       summary: Search Curtin content and course offerings
@@ -80,10 +84,10 @@ paths:
                   maxItems: 0
                   items: {}
                   description: Empty array returned when `query` is absent
+  /mimas/v1/search/facets:
     servers:
     - url: https://www.curtin.edu.au/wp-json
       description: Production — Curtin University public web platform
-  /mimas/v1/search/facets:
     get:
       operationId: getSearchFacets
       summary: Search facet pills
@@ -99,10 +103,10 @@ paths:
             application/json:
               schema:
                 type: string
+  /mimas/v1/search/quick-links:
     servers:
     - url: https://www.curtin.edu.au/wp-json
       description: Production — Curtin University public web platform
-  /mimas/v1/search/quick-links:
     get:
       operationId: getSearchQuickLinks
       summary: Search overlay quick links
@@ -116,68 +120,8 @@ paths:
             application/json:
               schema:
                 type: string
-    servers:
-    - url: https://www.curtin.edu.au/wp-json
-      description: Production — Curtin University public web platform
 components:
   schemas:
-    EntityPage:
-      type: object
-      required:
-      - items
-      - nItems
-      - page
-      - nPages
-      - limit
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntitySummary'
-        nItems:
-          type: integer
-          examples:
-          - 60562
-        page:
-          type: integer
-        nPages:
-          type: integer
-        limit:
-          type: integer
-        orderBy:
-          type: string
-        orderDir:
-          type: string
-    EntitySummary:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ROR suffix for institutions
-          ISO alpha-3 for countries: null
-        entity_type:
-          type: string
-          enum:
-          - institution
-          - country
-        name:
-          type: string
-        logo_sm:
-          type: string
-        region:
-          type: string
-        subregion:
-          type: string
-        country_code:
-          type: string
-        country_name:
-          type: string
-        institution_type:
-          type: string
-        weighted_rank:
-          type: number
-        stats:
-          $ref: '#/components/schemas/Stats'
     Stats:
       type: object
       description: Open-access counts (`n_`) and percentages (`p_`) for one entity and period. Field set observed live; every `n_` field has a matching `p_` field.
@@ -250,6 +194,63 @@ components:
           type: number
         p_outputs_black:
           type: number
+    EntitySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ROR suffix for institutions
+          ISO alpha-3 for countries: null
+        entity_type:
+          type: string
+          enum:
+          - institution
+          - country
+        name:
+          type: string
+        logo_sm:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        country_code:
+          type: string
+        country_name:
+          type: string
+        institution_type:
+          type: string
+        weighted_rank:
+          type: number
+        stats:
+          $ref: '#/components/schemas/Stats'
+    EntityPage:
+      type: object
+      required:
+      - items
+      - nItems
+      - page
+      - nPages
+      - limit
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitySummary'
+        nItems:
+          type: integer
+          examples:
+          - 60562
+        page:
+          type: integer
+        nPages:
+          type: integer
+        limit:
+          type: integer
+        orderBy:
+          type: string
+        orderDir:
+          type: string
     ElasticSearchResponse:
       type: object
       description: Raw Elasticsearch search response as returned by Curtin's cluster.
@@ -325,4 +326,4 @@ components:
                 type: string
 x-refined-from:
 - curtin-coki-openapi.yml
-- curtin-web-search-openapi.yml
+- curtin-search-api-openapi.yml

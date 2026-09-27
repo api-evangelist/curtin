@@ -103,6 +103,71 @@ paths:
                 - Not found
 components:
   schemas:
+    Entity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: object
+          properties:
+            text:
+              type: string
+            license:
+              type: string
+            url:
+              type: string
+        entity_type:
+          type: string
+        logo_sm:
+          type: string
+        logo_md:
+          type: string
+        logo_lg:
+          type: string
+        url:
+          type: string
+        wikipedia_url:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        country_code:
+          type: string
+        country_name:
+          type: string
+        institution_type:
+          type: string
+        start_year:
+          type: integer
+        end_year:
+          type: integer
+        acronyms:
+          type: array
+          items:
+            type: string
+        repositories:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        stats:
+          $ref: '#/components/schemas/Stats'
+        years:
+          type: array
+          description: Per-year time series; 26 entries observed for Curtin University.
+          items:
+            type: object
+            properties:
+              year:
+                type: integer
+              date:
+                type: string
+              stats:
+                $ref: '#/components/schemas/Stats'
     Stats:
       type: object
       description: Open-access counts (`n_`) and percentages (`p_`) for one entity and period. Field set observed live; every `n_` field has a matching `p_` field.
@@ -175,33 +240,6 @@ components:
           type: number
         p_outputs_black:
           type: number
-    EntityPage:
-      type: object
-      required:
-      - items
-      - nItems
-      - page
-      - nPages
-      - limit
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntitySummary'
-        nItems:
-          type: integer
-          examples:
-          - 60562
-        page:
-          type: integer
-        nPages:
-          type: integer
-        limit:
-          type: integer
-        orderBy:
-          type: string
-        orderDir:
-          type: string
     EntitySummary:
       type: object
       properties:
@@ -232,68 +270,30 @@ components:
           type: number
         stats:
           $ref: '#/components/schemas/Stats'
-    Entity:
+    EntityPage:
       type: object
+      required:
+      - items
+      - nItems
+      - page
+      - nPages
+      - limit
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: object
-          properties:
-            text:
-              type: string
-            license:
-              type: string
-            url:
-              type: string
-        entity_type:
-          type: string
-        logo_sm:
-          type: string
-        logo_md:
-          type: string
-        logo_lg:
-          type: string
-        url:
-          type: string
-        wikipedia_url:
-          type: string
-        region:
-          type: string
-        subregion:
-          type: string
-        country_code:
-          type: string
-        country_name:
-          type: string
-        institution_type:
-          type: string
-        start_year:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitySummary'
+        nItems:
           type: integer
-        end_year:
+          examples:
+          - 60562
+        page:
           type: integer
-        acronyms:
-          type: array
-          items:
-            type: string
-        repositories:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        stats:
-          $ref: '#/components/schemas/Stats'
-        years:
-          type: array
-          description: Per-year time series; 26 entries observed for Curtin University.
-          items:
-            type: object
-            properties:
-              year:
-                type: integer
-              date:
-                type: string
-              stats:
-                $ref: '#/components/schemas/Stats'
+        nPages:
+          type: integer
+        limit:
+          type: integer
+        orderBy:
+          type: string
+        orderDir:
+          type: string

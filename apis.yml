@@ -381,150 +381,51 @@ apis:
   properties:
   - type: Documentation
     url: https://researchdata.edu.au/contributors/curtin-university
+- aid: curtin:curtin-edu-au-website-wordpress-rest
+  name: Curtin University Website (WordPress REST)
+  description: >-
+    The public WordPress REST API (wp-json) of the Curtin University website at www.curtin.edu.au: the
+    route index of the site's content management system, catalogued as one site surface rather than as
+    separate APIs.
+  baseURL: https://www.curtin.edu.au/wp-json
+  tags:
+  - WordPress
+  x-surface: platform-generated
+  properties:
+  - type: Documentation
+    url: https://www.curtin.edu.au/wp-json
+  x-platform: wordpress
+  x-platform-surface: rest
 - aid: curtin:curtin-countries-api
   name: Curtin University Countries API
   description: The Countries API from Curtin University — 2 operation(s) for countries.
-  humanURL: https://www.curtin.edu.au/
-  baseURL: https://www.curtin.edu.au/wp-json
+  humanURL: https://auth.lis.curtin.edu.au/Shibboleth.sso/Metadata
+  baseURL: https://auth.lis.curtin.edu.au/Shibboleth.sso
   tags:
   - Countries
   properties:
   - type: OpenAPI
     url: openapi/curtin-countries-api-openapi.yml
-  - type: JSONSchema
-    url: json-schema/curtin-web-search-schema.json
-  - type: Examples
-    url: examples/curtin-web-search-elastic-engineering.json
-  - type: Examples
-    url: examples/curtin-web-global-menu.json
-  - type: Examples
-    url: examples/curtin-web-header-403.json
-  - type: Authentication
-    url: authentication/curtin-authentication.yml
-  - type: Errors
-    url: errors/curtin-errors.yml
-  - type: Lifecycle
-    url: lifecycle/curtin-lifecycle.yml
-  - type: Documentation
-    url: https://www.curtin.edu.au/wp-json/
-  - type: JSONSchema
-    url: json-schema/curtin-coki-entity-schema.json
-  - type: Examples
-    url: examples/curtin-coki-institution-02n415q13.json
-  - type: Examples
-    url: examples/curtin-coki-search-curtin.json
-  - type: Website
-    url: https://open.coki.ac/
-  - type: SourceCode
-    url: https://github.com/The-Academic-Observatory
 - aid: curtin:curtin-institutions-api
   name: Curtin University Institutions API
   description: The Institutions API from Curtin University — 2 operation(s) for institutions.
-  humanURL: https://www.curtin.edu.au/
-  baseURL: https://www.curtin.edu.au/wp-json
+  humanURL: https://auth.lis.curtin.edu.au/Shibboleth.sso/Metadata
+  baseURL: https://auth.lis.curtin.edu.au/Shibboleth.sso
   tags:
   - Institutions
   properties:
   - type: OpenAPI
     url: openapi/curtin-institutions-api-openapi.yml
-  - type: JSONSchema
-    url: json-schema/curtin-web-search-schema.json
-  - type: Examples
-    url: examples/curtin-web-search-elastic-engineering.json
-  - type: Examples
-    url: examples/curtin-web-global-menu.json
-  - type: Examples
-    url: examples/curtin-web-header-403.json
-  - type: Authentication
-    url: authentication/curtin-authentication.yml
-  - type: Errors
-    url: errors/curtin-errors.yml
-  - type: Lifecycle
-    url: lifecycle/curtin-lifecycle.yml
-  - type: Documentation
-    url: https://www.curtin.edu.au/wp-json/
-  - type: JSONSchema
-    url: json-schema/curtin-coki-entity-schema.json
-  - type: Examples
-    url: examples/curtin-coki-institution-02n415q13.json
-  - type: Examples
-    url: examples/curtin-coki-search-curtin.json
-  - type: Website
-    url: https://open.coki.ac/
-  - type: SourceCode
-    url: https://github.com/The-Academic-Observatory
-- aid: curtin:curtin-navigation-api
-  name: Curtin University Navigation API
-  description: Global navigation, site menu and footer used across the Curtin WordPress estate
-  humanURL: https://www.curtin.edu.au/
-  baseURL: https://www.curtin.edu.au/wp-json
-  tags:
-  - Navigation
-  properties:
-  - type: OpenAPI
-    url: openapi/curtin-navigation-api-openapi.yml
-  - type: JSONSchema
-    url: json-schema/curtin-web-search-schema.json
-  - type: Examples
-    url: examples/curtin-web-search-elastic-engineering.json
-  - type: Examples
-    url: examples/curtin-web-global-menu.json
-  - type: Examples
-    url: examples/curtin-web-header-403.json
-  - type: Authentication
-    url: authentication/curtin-authentication.yml
-  - type: Errors
-    url: errors/curtin-errors.yml
-  - type: Lifecycle
-    url: lifecycle/curtin-lifecycle.yml
-  - type: Documentation
-    url: https://www.curtin.edu.au/wp-json/
-  - type: JSONSchema
-    url: json-schema/curtin-coki-entity-schema.json
-  - type: Examples
-    url: examples/curtin-coki-institution-02n415q13.json
-  - type: Examples
-    url: examples/curtin-coki-search-curtin.json
-  - type: Website
-    url: https://open.coki.ac/
-  - type: SourceCode
-    url: https://github.com/The-Academic-Observatory
 - aid: curtin:curtin-search-api
   name: Curtin University Search API
   description: The Search API from Curtin University — 4 operation(s) for search.
-  humanURL: https://www.curtin.edu.au/
-  baseURL: https://www.curtin.edu.au/wp-json
+  humanURL: https://auth.lis.curtin.edu.au/Shibboleth.sso/Metadata
+  baseURL: https://auth.lis.curtin.edu.au/Shibboleth.sso
   tags:
   - Search
   properties:
   - type: OpenAPI
     url: openapi/curtin-search-api-openapi.yml
-  - type: JSONSchema
-    url: json-schema/curtin-web-search-schema.json
-  - type: Examples
-    url: examples/curtin-web-search-elastic-engineering.json
-  - type: Examples
-    url: examples/curtin-web-global-menu.json
-  - type: Examples
-    url: examples/curtin-web-header-403.json
-  - type: Authentication
-    url: authentication/curtin-authentication.yml
-  - type: Errors
-    url: errors/curtin-errors.yml
-  - type: Lifecycle
-    url: lifecycle/curtin-lifecycle.yml
-  - type: Documentation
-    url: https://www.curtin.edu.au/wp-json/
-  - type: JSONSchema
-    url: json-schema/curtin-coki-entity-schema.json
-  - type: Examples
-    url: examples/curtin-coki-institution-02n415q13.json
-  - type: Examples
-    url: examples/curtin-coki-search-curtin.json
-  - type: Website
-    url: https://open.coki.ac/
-  - type: SourceCode
-    url: https://github.com/The-Academic-Observatory
 common:
   - type: Website
     url: https://www.curtin.edu.au/
