@@ -21,7 +21,7 @@
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "curtin-coki-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "tag 'Search' spans 2 source specs (curtin-coki-openapi.yml, curtin-search-api-openapi.yml): per-path servers applied",
-    "apis.yml register: written (+3 apis, 12 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "_original/curtin-coki-openapi_2.yml: archived document superseded by a larger archived document",

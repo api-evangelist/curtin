@@ -153,6 +153,33 @@ components:
                 type: string
               stats:
                 $ref: '#/components/schemas/Stats'
+    EntityPage:
+      type: object
+      required:
+      - items
+      - nItems
+      - page
+      - nPages
+      - limit
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitySummary'
+        nItems:
+          type: integer
+          examples:
+          - 60562
+        page:
+          type: integer
+        nPages:
+          type: integer
+        limit:
+          type: integer
+        orderBy:
+          type: string
+        orderDir:
+          type: string
     Stats:
       type: object
       description: Open-access counts (`n_`) and percentages (`p_`) for one entity and period. Field set observed live; every `n_` field has a matching `p_` field.
@@ -255,30 +282,3 @@ components:
           type: number
         stats:
           $ref: '#/components/schemas/Stats'
-    EntityPage:
-      type: object
-      required:
-      - items
-      - nItems
-      - page
-      - nPages
-      - limit
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntitySummary'
-        nItems:
-          type: integer
-          examples:
-          - 60562
-        page:
-          type: integer
-        nPages:
-          type: integer
-        limit:
-          type: integer
-        orderBy:
-          type: string
-        orderDir:
-          type: string
