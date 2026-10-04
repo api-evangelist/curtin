@@ -122,6 +122,36 @@ paths:
                 type: string
 components:
   schemas:
+    EntitySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ROR suffix for institutions
+          ISO alpha-3 for countries: null
+        entity_type:
+          type: string
+          enum:
+          - institution
+          - country
+        name:
+          type: string
+        logo_sm:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        country_code:
+          type: string
+        country_name:
+          type: string
+        institution_type:
+          type: string
+        weighted_rank:
+          type: number
+        stats:
+          $ref: '#/components/schemas/Stats'
     EntityPage:
       type: object
       required:
@@ -221,70 +251,6 @@ components:
           type: number
         p_outputs_black:
           type: number
-    EntitySummary:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ROR suffix for institutions
-          ISO alpha-3 for countries: null
-        entity_type:
-          type: string
-          enum:
-          - institution
-          - country
-        name:
-          type: string
-        logo_sm:
-          type: string
-        region:
-          type: string
-        subregion:
-          type: string
-        country_code:
-          type: string
-        country_name:
-          type: string
-        institution_type:
-          type: string
-        weighted_rank:
-          type: number
-        stats:
-          $ref: '#/components/schemas/Stats'
-    ElasticHit:
-      type: object
-      properties:
-        _index:
-          type: string
-          description: Curtin Elasticsearch index, e.g. curtin-learning-offerings-prod-v20260830170034
-        _id:
-          type: string
-          examples:
-          - SPUC-INOPMv1
-        _score:
-          type: number
-        _ignored:
-          type: array
-          items:
-            type: string
-        _source:
-          type: object
-          properties:
-            search_tab:
-              type: string
-              examples:
-              - Courses
-            content_type:
-              type: string
-              examples:
-              - Course
-        highlight:
-          type: object
-          properties:
-            search_as_you_type:
-              type: array
-              items:
-                type: string
     ElasticSearchResponse:
       type: object
       description: Raw Elasticsearch search response as returned by Curtin's cluster.
@@ -324,6 +290,40 @@ components:
         suggest:
           type: object
           additionalProperties: true
+    ElasticHit:
+      type: object
+      properties:
+        _index:
+          type: string
+          description: Curtin Elasticsearch index, e.g. curtin-learning-offerings-prod-v20260830170034
+        _id:
+          type: string
+          examples:
+          - SPUC-INOPMv1
+        _score:
+          type: number
+        _ignored:
+          type: array
+          items:
+            type: string
+        _source:
+          type: object
+          properties:
+            search_tab:
+              type: string
+              examples:
+              - Courses
+            content_type:
+              type: string
+              examples:
+              - Course
+        highlight:
+          type: object
+          properties:
+            search_as_you_type:
+              type: array
+              items:
+                type: string
 x-refined-from:
 - curtin-coki-openapi.yml
 - curtin-search-api-openapi.yml

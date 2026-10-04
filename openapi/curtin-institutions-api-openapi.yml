@@ -103,33 +103,21 @@ paths:
                 - Not found
 components:
   schemas:
-    Entity:
+    EntitySummary:
       type: object
       properties:
         id:
           type: string
-        name:
-          type: string
-        description:
-          type: object
-          properties:
-            text:
-              type: string
-            license:
-              type: string
-            url:
-              type: string
+          description: ROR suffix for institutions
+          ISO alpha-3 for countries: null
         entity_type:
           type: string
+          enum:
+          - institution
+          - country
+        name:
+          type: string
         logo_sm:
-          type: string
-        logo_md:
-          type: string
-        logo_lg:
-          type: string
-        url:
-          type: string
-        wikipedia_url:
           type: string
         region:
           type: string
@@ -141,33 +129,10 @@ components:
           type: string
         institution_type:
           type: string
-        start_year:
-          type: integer
-        end_year:
-          type: integer
-        acronyms:
-          type: array
-          items:
-            type: string
-        repositories:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
+        weighted_rank:
+          type: number
         stats:
           $ref: '#/components/schemas/Stats'
-        years:
-          type: array
-          description: Per-year time series; 26 entries observed for Curtin University.
-          items:
-            type: object
-            properties:
-              year:
-                type: integer
-              date:
-                type: string
-              stats:
-                $ref: '#/components/schemas/Stats'
     EntityPage:
       type: object
       required:
@@ -267,21 +232,33 @@ components:
           type: number
         p_outputs_black:
           type: number
-    EntitySummary:
+    Entity:
       type: object
       properties:
         id:
           type: string
-          description: ROR suffix for institutions
-          ISO alpha-3 for countries: null
-        entity_type:
-          type: string
-          enum:
-          - institution
-          - country
         name:
           type: string
+        description:
+          type: object
+          properties:
+            text:
+              type: string
+            license:
+              type: string
+            url:
+              type: string
+        entity_type:
+          type: string
         logo_sm:
+          type: string
+        logo_md:
+          type: string
+        logo_lg:
+          type: string
+        url:
+          type: string
+        wikipedia_url:
           type: string
         region:
           type: string
@@ -293,7 +270,30 @@ components:
           type: string
         institution_type:
           type: string
-        weighted_rank:
-          type: number
+        start_year:
+          type: integer
+        end_year:
+          type: integer
+        acronyms:
+          type: array
+          items:
+            type: string
+        repositories:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
         stats:
           $ref: '#/components/schemas/Stats'
+        years:
+          type: array
+          description: Per-year time series; 26 entries observed for Curtin University.
+          items:
+            type: object
+            properties:
+              year:
+                type: integer
+              date:
+                type: string
+              stats:
+                $ref: '#/components/schemas/Stats'
