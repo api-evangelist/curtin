@@ -4,21 +4,28 @@
 front_door_ai:
   slug: curtin
   lexicon_version: '1.0'
-  probed_at: '2026-09-17'
-  host: open.coki.ac
-  final_host: open.coki.ac
+  probed_at: '2026-09-25'
+  host: www.curtin.edu.au
+  final_host: www.curtin.edu.au
   ownership: own
   owner: curtin
   shares_host_with: null
   inherited_from: null
-  verdict: silent
-  score: 0
-  host_score: 0
-  density: 0.0
-  words: 334
+  alias_of: null
+  verdict: scored
+  score: 3
+  band: 3
+  band_label: light
+  host_score: 3
+  density: 1.92
+  words: 1561
   tiers:
-    agentic: 0
-    core: 0
+    agentic: 1
+    core: 2
     model: 0
-  ambiguous: 0
-  top_terms: null
+  ambiguous: 1
+  top_terms:
+    AI: 1
+    agent: 1
+    embedding: 1
+    machine learning: 1
