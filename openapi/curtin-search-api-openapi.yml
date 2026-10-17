@@ -122,36 +122,6 @@ paths:
                 type: string
 components:
   schemas:
-    EntitySummary:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ROR suffix for institutions
-          ISO alpha-3 for countries: null
-        entity_type:
-          type: string
-          enum:
-          - institution
-          - country
-        name:
-          type: string
-        logo_sm:
-          type: string
-        region:
-          type: string
-        subregion:
-          type: string
-        country_code:
-          type: string
-        country_name:
-          type: string
-        institution_type:
-          type: string
-        weighted_rank:
-          type: number
-        stats:
-          $ref: '#/components/schemas/Stats'
     EntityPage:
       type: object
       required:
@@ -251,6 +221,36 @@ components:
           type: number
         p_outputs_black:
           type: number
+    EntitySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ROR suffix for institutions
+          ISO alpha-3 for countries: null
+        entity_type:
+          type: string
+          enum:
+          - institution
+          - country
+        name:
+          type: string
+        logo_sm:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        country_code:
+          type: string
+        country_name:
+          type: string
+        institution_type:
+          type: string
+        weighted_rank:
+          type: number
+        stats:
+          $ref: '#/components/schemas/Stats'
     ElasticSearchResponse:
       type: object
       description: Raw Elasticsearch search response as returned by Curtin's cluster.
