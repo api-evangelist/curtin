@@ -1,4 +1,4 @@
-# Curtin University (curtin)
+# Curtin University
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,60 +64,142 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Curtin University is a public research university in Perth, Western Australia, ranked #174 in the QS World University Rankings 2025. This repository catalogs Curtin's public developer and API footprint as an [APIs.json](https://apisjson.org) profile. Curtin does not currently operate a centralized public developer portal or a documented general-purpose API program; the verifiable footprint centers on its library/research repository (espace) and research-data registry contributions delivered through third-party platforms.
+Curtin University is a public research university in Perth, Western Australia, and the largest university in the state. Its programmable footprint is small, real, and almost entirely unadvertised: Curtin operates no developer portal, publishes no OpenAPI, and issues no API keys, yet three institution-operated surfaces answer unauthenticated requests today. The first is `mimas/v1`, the bespoke REST namespace registered by Curtin's own WordPress theme on www.curtin.edu.au, whose `search/elastic` endpoint is a keyless proxy onto Curtin's Elasticsearch cluster indexing `curtin-learning-offerings-prod-*` — the university's course and unit catalog. The second is the Curtin Open Knowledge Initiative's open-access analytics API at api.coki.ac, which serves CORS-open JSON for 60,562 institutions and every country with a 26-year time series, and is the most substantial API Curtin engineers itself. The third is identity: Curtin Library runs a Shibboleth SAML 2.0 service provider on its own Kubernetes cluster, registered in the Australian Access Federation and therefore eduGAIN, serving its entity metadata publicly. Curtin's matching Identity Provider carries a curtin.edu.au hostname but CNAMEs into AAF's managed IdP service, so it is recorded as a tenant, a distinction only DNS resolution reveals. Beyond those, Curtin is a buyer rather than a producer. The research repository at curate.curtin.edu.au is a Figshare tenant — espace.curtin.edu.au, which this profile previously described as an Ex Libris Primo/Esploro repository, now hard-redirects there. Library discovery is an Ex Libris Primo/Alma tenant, the LMS is a Blackboard tenant, and the service desk is ServiceNow. Those relationships are recorded here as tenant surfaces because they are genuine institutional facts; the contracts behind them belong to the vendors and are deliberately not saved under Curtin's name.
 
-- APIs.json: https://raw.githubusercontent.com/api-evangelist/curtin/refs/heads/main/apis.yml
-- Run with Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=curtin-api-evangelist&utm_content=repo
+**Areas:** University · Higher Education · Education · Research · Open Access · Open Data · Course Catalog · Library · Identity Federation · Research Data · Australia · Western Australia
 
-## Type
+## Curtin University on APIs.io
 
-- Index
-- Consumer
-- 3rd-Party
+Everything profiled for Curtin University is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/curtin/](https://apis.io/providers/curtin/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (12)
 
-Education, Higher Education, University, Research, Open Data, Library, Australia
+- [Curtin Library Shibboleth Service Provider](https://apis.io/apis/curtin/identity-sp/) — A Shibboleth SAML 2.0 service provider that Curtin Library runs on its own Kubernetes cluster, serving its entity metadata unauthenticated as…
+- [Curtin University SAML Identity Provider (AAF Managed IdP)](https://apis.io/apis/curtin/identity-idp/) — Curtin's SAML 2.0 Identity Provider, entityID https://idpp1.curtin.edu.au/idp/shibboleth, registered in the Australian Access Federation and reachable…
+- [Curtin Data Platform (AMP)](https://apis.io/apis/curtin/data-platform/) — Curtin's internal data catalog, dashboard and file-search platform — a Remix single-page application at data.curtin.edu.au calling a Curtin-operated AWS API…
+- [Curtin Curate Research Repository (Figshare tenant)](https://apis.io/apis/curtin/curate/) — Curtin's institutional research repository, formerly espace on Ex Libris, now running on Figshare at curate.curtin.edu.au. The data, the theses, the DOIs…
+- [Curtin University DOI Registration (DataCite)](https://apis.io/apis/curtin/datacite/) — Curtin University is a DataCite member organisation and had minted 3,243 DOIs under its provider at time of probing, across two registered repositories —…
+- [Curtin Library Discovery (Ex Libris Primo/Alma tenant)](https://apis.io/apis/curtin/catalogue/) — Curtin Library's discovery layer, running on Ex Libris Primo over Alma. The collection and the holdings are Curtin's; the platform, its APIs and its…
+- [Curtin Blackboard Learn (tenant)](https://apis.io/apis/curtin/lms/) — Curtin's learning management system, a Blackboard Learn tenant fronted by Curtin's own PingAM SAML identity provider at id.curtin.edu.au. Any LTI, Caliper…
+- [Curtin Research Data in Research Data Australia (ARDC)](https://apis.io/apis/curtin/researchdata/) — Curtin contributes research data collection records to Research Data Australia, the national registry run by the Australian Research Data Commons. The…
+- [Curtin University Website (WordPress REST)](https://apis.io/apis/curtin/curtin-edu-au-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Curtin University website at www.curtin.edu.au: the route index of the site's content management system,…
+- [Curtin University Countries API](https://apis.io/apis/curtin/curtin-countries-api/) — The Countries API from Curtin University — 2 operation(s) for countries.
+- [Curtin University Institutions API](https://apis.io/apis/curtin/curtin-institutions-api/) — The Institutions API from Curtin University — 2 operation(s) for institutions.
+- [Curtin University Search API](https://apis.io/apis/curtin/curtin-search-api/) — The Search API from Curtin University — 4 operation(s) for search.
 
-## APIs
+### Published properties
 
-- **Curtin espace Institutional Repository** — open-access repository of Curtin research outputs and theses on Ex Libris Primo/Esploro. Docs: https://espace.curtin.edu.au/
-- **Curtin Research Data (via Research Data Australia)** — Curtin research data collection records published through the national RDA registry. Docs: https://researchdata.edu.au/contributors/curtin-university
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-> No documented public REST/OAI-PMH endpoints could be independently verified during this review. Entries reflect confirmed platforms only; no endpoints were fabricated.
+#### JSON Schema (2)
 
-## Plans
+The data models the API reads and writes.
 
-- [plans/curtin-plans-pricing.yml](plans/curtin-plans-pricing.yml)
+- [COKI Entity](https://apis.io/schemas/curtin/curtin-coki-entity/)
+- [Curtin Web Search Response (mimas/v1)](https://apis.io/schemas/curtin/curtin-web-search/)
 
-## Rate Limits
+#### JSON-LD (1)
 
-- [rate-limits/curtin-rate-limits.yml](rate-limits/curtin-rate-limits.yml)
+Linked-data contexts for the provider's vocabulary.
 
-## FinOps
+- [Curtin Context](https://apis.io/jsonld/curtin/curtin-context/)
 
-- [finops/curtin-finops.yml](finops/curtin-finops.yml)
+#### Examples (5)
 
-## Timestamps
+Example requests and responses.
 
-- Created: 2026-06-03
-- Modified: 2026-06-03
+- [Curtin Coki Institution 02N415Q13](https://apis.io/examples/curtin/curtin-coki-institution-02n415q13/)
+- [Curtin Coki Search Curtin](https://apis.io/examples/curtin/curtin-coki-search-curtin/)
+- [Curtin Web Global Menu](https://apis.io/examples/curtin/curtin-web-global-menu/)
+- [Curtin Web Header 403](https://apis.io/examples/curtin/curtin-web-header-403/)
+- [Curtin Web Search Elastic Engineering](https://apis.io/examples/curtin/curtin-web-search-elastic-engineering/)
 
-## Common Properties
+#### Security (2)
 
-- Website: https://www.curtin.edu.au/
-- GitHub (Curtin Institute for Data Science): https://github.com/CurtinIDS
-- GitHub (Curtin Open Knowledge Initiative): https://github.com/Curtin-Open-Knowledge-Initiative
-- LinkedIn: https://www.linkedin.com/school/curtin-university/
-- Review: [review.yml](review.yml)
+Authentication, trust centre, and vulnerability disclosure.
 
-## Notes
+- [Curtin Authentication](https://apis.io/security/curtin/curtin-authentication/)
+- [Curtin Domain Security](https://apis.io/security/curtin/curtin-domain-security/)
 
-- Verification caveats: the legacy espace OAI-PMH path (OAI-PUB/2) now redirects into the Primo discovery web app rather than serving OAI-PMH responses.
-- data.curtin.edu.au resolves to a static S3/CloudFront-hosted landing page, not an open-data API.
-- No `api.curtin.edu.au`, `developer.curtin.edu.au`, or public status page resolved.
-- There is no single official Curtin GitHub organization; only department-level orgs were found.
+#### Plans and pricing (1)
 
-## Maintainers
+Published plans, tiers and prices.
 
-- Kin Lane — kin@apievangelist.com
+- [Curtin Plans Pricing](https://apis.io/plans/curtin/curtin-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Curtin Rate Limits](https://apis.io/rate-limits/curtin/curtin-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Curtin Finops](https://apis.io/finops/curtin/curtin-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.curtin.edu.au/)
+- [API reference](https://www.curtin.edu.au/wp-json/)
+- [Support](https://www.curtin.edu.au/about/contact/)
+- [Blog](https://www.curtin.edu.au/news/)
+- [Terms of service](https://www.curtin.edu.au/disclaimer-of-liability/)
+- [Privacy policy](https://www.curtin.edu.au/about/governance/privacy/)
+- [GitHub](https://github.com/CurtinIDS)
+
+## API Evangelist rating
+
+**Kin Score 25.2** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 53.6 |
+| Contract quality | 22.0 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 35.7 |
+| Access clarity | 26.3 |
+
+**Agent readiness 18.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 24.5** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/curtin/](https://apis.io/providers/curtin/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Curtin University: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/curtin/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
